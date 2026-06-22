@@ -8,9 +8,33 @@
 https://zenn.dev/<user>/articles/<slug>
 ```
 
+## 解説記事
+
+このツールを作った背景と実装方針は，次のZenn記事にまとめています。
+
+```text
+https://zenn.dev/kato_aichi/articles/bad1d62fd7c9f5
+```
+
 ## 事前準備
 
 Node.js 20以上を使います。最初に依存パッケージとPlaywright用のChromiumを入れます。
+
+```bash
+npm install
+npx playwright install chromium
+```
+
+## GitHubから使う
+
+まだリポジトリを取得していない場合は，次の手順で取得します。
+
+```bash
+git clone https://github.com/MasaKat0/zenn-pdf.git
+cd zenn-pdf
+```
+
+その後，依存パッケージとChromiumを入れます。
 
 ```bash
 npm install
@@ -22,7 +46,13 @@ npx playwright install chromium
 PDF化したいZenn記事のURLを，次のコマンドの末尾に入れて実行します。
 
 ```bash
-npm run pdf -- https://zenn.dev/headwaters/articles/8bc4e8c3119fa3
+npm run pdf -- https://zenn.dev/<user>/articles/<slug>
+```
+
+たとえば，このツールの解説記事をPDFとして保存する場合は，次を実行します。
+
+```bash
+npm run pdf -- https://zenn.dev/kato_aichi/articles/bad1d62fd7c9f5
 ```
 
 出力先を指定しない場合，PDFは `pdfs/` に保存されます。ファイル名は，Zennのユーザー名と記事スラッグから自動で決まります。
@@ -30,23 +60,23 @@ npm run pdf -- https://zenn.dev/headwaters/articles/8bc4e8c3119fa3
 上の例では次のPDFが作成されます。
 
 ```text
-pdfs/headwaters_8bc4e8c3119fa3.pdf
+pdfs/kato_aichi_bad1d62fd7c9f5.pdf
 ```
 
 出力先を指定したい場合は，URLの後ろにPDFファイルのパスを入れます。
 
 ```bash
-npm run pdf -- https://zenn.dev/headwaters/articles/8bc4e8c3119fa3 pdfs/gbrain.pdf
+npm run pdf -- https://zenn.dev/kato_aichi/articles/bad1d62fd7c9f5 pdfs/zenn-pdf-article.pdf
 ```
 
 または，オプション形式でも指定できます。`--output` と `--out` は同じ意味です。
 
 ```bash
-npm run pdf -- --url https://zenn.dev/headwaters/articles/8bc4e8c3119fa3 --output pdfs/gbrain.pdf
+npm run pdf -- --url https://zenn.dev/kato_aichi/articles/bad1d62fd7c9f5 --output pdfs/zenn-pdf-article.pdf
 ```
 
 ```bash
-npm run pdf -- --url https://zenn.dev/headwaters/articles/8bc4e8c3119fa3 --out pdfs/gbrain.pdf
+npm run pdf -- --url https://zenn.dev/kato_aichi/articles/bad1d62fd7c9f5 --out pdfs/zenn-pdf-article.pdf
 ```
 
 ## 動作確認
@@ -87,7 +117,7 @@ Done.
 PDFの体裁を確認したい場合は，PDF化直前のHTMLを保存できます。
 
 ```bash
-npm run pdf -- https://zenn.dev/headwaters/articles/8bc4e8c3119fa3 --debug-html debug/gbrain.html
+npm run pdf -- https://zenn.dev/kato_aichi/articles/bad1d62fd7c9f5 --debug-html debug/zenn-pdf-article.html
 ```
 
 HTMLをブラウザで開くと，PDFに入る本文の幅，コードブロック，表，画像の状態を確認できます。
@@ -112,12 +142,12 @@ https://zenn.dev/<user>/articles/<slug>
 
 ### PDFの本文が細い列になる
 
-古い版では，Zennの画面レイアウトを残したまま `article` 要素を印刷していたため，本文が左側の細い列に押し込まれることがありました。この版では `.znc` の本文を抽出し，PDF用の単独HTMLに組み直してから出力します。
+Zennの画面レイアウトがPDFに残ると，本文が左側の細い列に押し込まれることがあります。このツールでは `.znc` の本文を抽出し，PDF用の単独HTMLに組み直してから出力します。
 
 ### 途中で止まる
 
 最後に表示されたステップを確認してください。ネットワークが遅い場合は，次のように待機時間を伸ばせます。
 
 ```bash
-npm run pdf -- https://zenn.dev/headwaters/articles/8bc4e8c3119fa3 --timeout 120000
+npm run pdf -- https://zenn.dev/kato_aichi/articles/bad1d62fd7c9f5 --timeout 120000
 ```
